@@ -53,6 +53,6 @@ body.addEventListener('keydown', function(e) {
 });
 
 //当菜单被触发的时候 产生如下事件
-body.addEventListener('contextmenu',function(e){
+body.addEventListener('contextmenu', function(e) {
     console.log(e);
 });
