@@ -16,7 +16,7 @@ a rich editor for pc
 
 
 # virtualDOM
-virtualDOM主要用于解决跨标签选择之后，的dom操作的问题，具体还需要研究一下。
+在对于采用源码的方式进行编辑的时候，要用virtualDOM进行html格式的优化，防止```<p>asdfa<p></p><pa>asdfasfa</p>```这种不正确的结构
 
 # 不同浏览器对应常规的execCommand指令的不同结果
 |属性/浏览器 |IE |CHROME |MOZ |解决方案|
