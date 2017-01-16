@@ -30,6 +30,10 @@ DOMUtil.fn = DOMUtil.prototype = {
 }
 DOMUtil.fn.init.prototype = DOMUtil.fn;
 
+_.each([require('./clz.js')],function(fn){
+    fn(DOMUtil.prototype);
+});
+
 // var domUtil = {
 //     //NODE类型
 //     NODE_TYPE: {

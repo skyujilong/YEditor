@@ -16,4 +16,4 @@
 // domUtil.text(domUtil.$('span')[0],'wo cao zheshi ceshi!!!!');
 // domUtil.html(d1Dom,'<h1>我了个去</h1>');
 var $ = require('../mods/ui/editor/util/domUtil');
-console.log($("div"));
+console.log($("div").addClass('demo').hasClass('demo'));
