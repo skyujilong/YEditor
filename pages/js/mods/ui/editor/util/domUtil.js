@@ -28,11 +28,11 @@ DOMUtil.fn = DOMUtil.prototype = {
         }.bind(this));
     }
 }
-DOMUtil.fn.init.prototype = DOMUtil.fn;
-
 _.each([require('./clz.js')],function(fn){
-    fn(DOMUtil.prototype);
+    DOMUtil.prototype = _.assignIn(DOMUtil.prototype,fn(DOMUtil));
 });
+DOMUtil.fn.init.prototype = DOMUtil.fn;
+console.dir(DOMUtil);
 
 // var domUtil = {
 //     //NODE类型
