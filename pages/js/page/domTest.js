@@ -17,3 +17,4 @@
 // domUtil.html(d1Dom,'<h1>我了个去</h1>');
 var $ = require('../mods/ui/editor/util/domUtil');
 console.log($("div").addClass('demo').hasClass('demo'));
+console.log($(document.getElementById('d1')).hasClass('demo'));

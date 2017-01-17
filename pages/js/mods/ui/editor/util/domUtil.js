@@ -12,20 +12,31 @@ DOMUtil.fn = DOMUtil.prototype = {
 
     init: function(selector, context) {
         var eleList;
-        this.selector = selector;
-        if (!_.isString(selector)) {
-            throw new Error('need a string');
+        this.length = 0;
+        if(_.isString(selector)){
+            this.selector = selector;
+            selector = util.trim(selector);
+            if (!context) {
+                context = window.document;
+            }
+            eleList = qwery(selector, context);
+            this.length = eleList.length;
+            _.forEach(eleList,function(ele,index){
+                this[index] = ele;
+            }.bind(this));
+        }else if(_.isObject(selector) && selector.nodeType === this.NODE_TYPE.ELEMENT_NODE){
+            this[0] = selector;
+            this.length = 1;
         }
-        selector = util.trim(selector);
-
-        if (!context) {
-            context = window.document;
-        }
-        eleList = qwery(selector, context);
-        this.length = eleList.length;
-        _.forEach(eleList,function(ele,index){
-            this[index] = ele;
-        }.bind(this));
+        return this;
+    },
+    NODE_TYPE: {
+        ELEMENT_NODE: 1,
+        TEXT_NODE: 3,
+        COMMENT_NODE: 8,
+        DOCUMENT_NODE: 9,
+        DOCUMENT_TYPE_NODE: 10,
+        DOCUMENT_FRAGMENT_NODE: 11
     }
 }
 _.each([require('./clz.js')],function(fn){
@@ -36,14 +47,7 @@ console.dir(DOMUtil);
 
 // var domUtil = {
 //     //NODE类型
-//     NODE_TYPE: {
-//         ELEMENT_NODE: 1,
-//         TEXT_NODE: 3,
-//         COMMENT_NODE: 8,
-//         DOCUMENT_NODE: 9,
-//         DOCUMENT_TYPE_NODE: 10,
-//         DOCUMENT_FRAGMENT_NODE: 11
-//     },
+//
 //     /**
 //      * 选择器
 //      * @param  {String} selector 选择器
