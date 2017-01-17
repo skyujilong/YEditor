@@ -5,50 +5,67 @@ var util = require('./util');
 
 module.exports = function($) {
 
-    function getClassList(el) {
-        return util.trim(el.className).replace(/\s+/, ' ').split(' ');
+    /**
+     * 循环dom中的className
+     * @param  {[type]}   $el     [description]
+     * @param  {[type]}   clzName 外面传过来要操作的className
+     * @param  {Function} fn      回调函数
+     * @param  {[type]}   scope   作用域
+     * @return {[type]}           [description]
+     */
+    function eachClass($el, clzName, fn, scope) {
+        var clzList;
+        clzName = util.trim(clzName.replace(/\s+/g, ' '));
+        clzList = clzName.split(' ');
+        _.each($el, function(el) {
+            _.each(clzList, function(clzName) {
+                fn.call(scope || null, el, clzName);
+            });
+        });
     }
 
     return {
         addClass: function(clzName) {
-            var reg;
+
             if (!_.isString(clzName)) {
                 throw new Error('need string');
             }
-            clzName = clzName.replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s*$/, '');
-            reg = new RegExp(clzName, 'i');
-            _.forEach(this, function(el) {
-                var clzNameList = getClassList(el);
-                if (clzNameList.length === 0) {
-
-                } else {
-
+            eachClass(this, clzName, function(el, clz) {
+                if (el.className.indexOf(clz) < 0) {
+                    el.className += ((el.className ? ' ' : '') + clz);
                 }
-                if (!reg.test(el.className)) {
-                    el.className += ((el.className ? ' ' : '') + clzName);
-                }
-            }.bind(this));
+            }, this);
             return this;
         },
         hasClass: function(clzName) {
-            getClassList(this[1]);
-            var flag = false,
-                reg;
+            var flag = false;
+            if(!_.isString(clzName)){
+                throw new Error('need string');
+            }
+            eachClass(this, clzName, function(el, clz) {
+                if (el.className.indexOf(clz) >=0  && !flag) {
+                    flag = true;
+                }
+            }, this);
+            return flag;
+        },
+        removeClass: function(clzName) {
             if (!_.isString(clzName)) {
                 throw new Error('need string');
             }
-            clzName = clzName.replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s*$/, '');
-            reg = new RegExp(clzName, 'i');
-            _.forEach(this, function(el) {
-                var clzName = el.className;
-                if (!flag && reg.test(clzName)) {
-                    flag = true;
+            eachClass(this, clzName, function(el, clz) {
+                var reg, curClzName = el.className;
+                if (el.className.indexOf(clz) >= 0) {
+                    reg = new RegExp('\s*' + clz + '\s*');
+                    curClzName = curClzName.replace(reg, ' ');
+                    if (/^\s+$/.test(curClzName)) {
+                        el.className = '';
+                    } else {
+                        el.className = curClzName;
+                    }
                 }
-            });
-            return flag;
-        },
-        removeClass: function() {
-
+            }, this);
+            return this;
         }
     };
 };
