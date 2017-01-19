@@ -46,8 +46,34 @@ module.exports = function($) {
                 }
             });
         },
-        off: function() {
-
+        removeEvent: function(type, guid) {
+            _.each(this, function(el) {
+                if (el.removeEventListener) {
+                    el.removeEventListener(_.isString(type) ? type : '', el.cacheFn[guid] ? el.cacheFn[guid] : undefined);
+                } else {
+                    el.detachEvent(_.isString(type) ? ('on' + type) : '', el.cacheFn[guid] ? el.cacheFn[guid] : undefined);
+                }
+                if(_.isString(type) && _.isNumber(guid)){
+                    delete el.cacheFn[guid];
+                }else if(_.isUndefined(type)){
+                    delete el.cacheFn;
+                }
+            });
+        },
+        off: function(type, handler) {
+            if (arguments.length === 0) {
+                // remove all event
+                this.removeEvent();
+            } else if (_.isString(type) && _.isFunction(handler) && _.isNumber(handler.guid)) {
+                // remove handler event 必须有guid才能够删除内容
+                this.removeEvent(type,handler.guid);
+            } else if (_.isString(type) && _.isFunction(handler) && !_.isNumber(handler.guid)) {
+                return this;
+            } else if (_.isString(type) && _.isUndefined(handler)) {
+                // remove type all event
+                this.removeEvent(type);
+            }
+            return this;
         }
     }
 };

@@ -23,4 +23,10 @@ console.log($("input[name='test']").val('haha').val());
 $('input[name]').on('input click',function(){
     console.log($(this).val());
     console.dir(this);
-});
+}).attr('id','testInput');
+
+setTimeout(function(){
+    console.log('remove input event!!!!!');
+    $('input[name]').off('input');
+    
+},4000);
