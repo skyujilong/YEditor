@@ -18,3 +18,9 @@
 var $ = require('../mods/ui/editor/util/domUtil');
 console.log($("div").addClass('demo').hasClass('demo'));
 console.log($(document.getElementById('d1')).hasClass('demo'));
+
+console.log($("input[name='test']").val('haha').val());
+$('input[name]').on('input click',function(){
+    console.log($(this).val());
+    console.dir(this);
+});
